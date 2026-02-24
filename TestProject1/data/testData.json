@@ -1,0 +1,4 @@
+{
+  "user1": { "username": "tomsmith", "password": "SuperSecretPassword!" },
+  "badUser": { "username": "wronguser", "password": "wrongpassword" }
+}
