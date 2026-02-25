@@ -4,23 +4,29 @@ on:
     branches: [ main, master ]
   pull_request:
     branches: [ main, master ]
-  workflow_dispatch: # <--- This is now perfectly lined up!
+  workflow_dispatch: # This adds the "Run workflow" button on GitHub
 jobs:
   test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-    - uses: actions/setup-node@v4
+    - uses: actions/checkout@v4 # 1. Grab your code from GitHub
+    - uses: actions/setup-node@v4 # 2. Install Node.js
       with:
         node-version: 18
     - name: Install dependencies
-      run: npm ci
+      run: npm ci # 3. Install your project's LEGO pieces
     - name: Install Playwright Browsers
-      run: npx playwright install --with-deps
+      run: npx playwright install --with-deps # 4. Install Chrome/Firefox
+    
     - name: Run Playwright tests
-      run: npx playwright test
-    - uses: actions/upload-artifact@v4
+      run: npx playwright test # 5. RUN THE TESTS!
+      # THE MAGIC KEYS: This connects the Robot to your Cloud Safe
+      env:
+        USER_NAME: ${{ secrets.USER_NAME }}
+        USER_PASS: ${{ secrets.USER_PASS }}
+        
+    - uses: actions/upload-artifact@v4 # 6. Save the report if it fails
       if: always()
       with:
         name: playwright-report
